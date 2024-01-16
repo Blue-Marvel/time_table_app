@@ -25,7 +25,6 @@ class DataSource {
   static Future<List<TimeTable>> getAllTimeTable() async {
     final db = await _getDB();
     final List<Map<String, dynamic>> dbMap = await db.query(_dbName);
-    print('Map: $dbMap');
     return List.generate(
       dbMap.length,
       (index) => TimeTable.fromMap(
@@ -47,14 +46,19 @@ class DataSource {
   }
 
   static Future<TimeTable> updateTimeTable(
-      Map<String, String> timeTableModel) async {
+      Map<String, dynamic> timeTableModel) async {
     final db = await _getDB();
     final id = await db.update(_dbName, timeTableModel,
         where: 'id = ?', whereArgs: [timeTableModel['id']]);
     return TimeTable(
-        id: id,
+        id: timeTableModel["id"],
         subject: timeTableModel['subject'] ?? "",
         day: timeTableModel['day'] ?? "",
         time: timeTableModel['time'] ?? "");
+  }
+
+  static Future<void> deleteTimeTable(int id) async {
+    final db = await _getDB();
+    await db.delete(_dbName, where: 'id = ?', whereArgs: [id]);
   }
 }

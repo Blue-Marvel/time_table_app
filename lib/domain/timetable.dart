@@ -1,8 +1,8 @@
 class TimeTable {
-  final int id;
-  final String subject;
-  final String day;
-  final String time;
+  int id;
+  String subject;
+  String day;
+  String time;
 
   TimeTable({
     required this.id,
@@ -41,5 +41,10 @@ class TimeTable {
       day: map['day'] ?? '',
       time: map['time'] ?? '',
     );
+  }
+
+  @override
+  String toString() {
+    return "id: $id, subject: $subject, day: $day, time: $time";
   }
 }

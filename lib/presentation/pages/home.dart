@@ -58,7 +58,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (_) => AddTimeTableScreen(
-                              id: listData[index].id.toString(),
+                              id: listData[index].id,
                               subject: listData[index].subject,
                               day: listData[index].day,
                               time: listData[index].time,
@@ -69,7 +69,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           child: ListTile(
                             title: Text(listData[index].subject),
                             subtitle: Text(listData[index].day),
-                            trailing: Text(listData[index].time),
+                            trailing: SizedBox(
+                              height: 30,
+                              width: MediaQuery.of(context).size.width * 0.2,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(listData[index].time),
+                                  InkWell(
+                                    onTap: () {
+                                      ref
+                                          .read(timeTableProvider)
+                                          .deleteTimetable(listData[index].id);
+                                    },
+                                    child: const Icon(Icons.delete),
+                                  )
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ),

@@ -15,6 +15,7 @@ class TimeTableProvider extends ChangeNotifier {
       await Future.delayed(const Duration(seconds: 3));
       final list = await DataSource.getAllTimeTable();
       _timeTableList = [...list];
+      print(_timeTableList);
       notifyListeners();
     } catch (e) {
       debugPrint(e.toString());
@@ -36,14 +37,31 @@ class TimeTableProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateTimetable({required Map<String, String> timeTable}) async {
+  Future<void> updateTimetable(
+      {required Map<String, dynamic> timeTable}) async {
     try {
       final TimeTable update = await DataSource.updateTimeTable(timeTable);
-      _timeTableList.where();
+      int indexToUpdate =
+          _timeTableList.indexWhere((map) => map.id == update.id);
+      print(indexToUpdate);
+      if (indexToUpdate != -1) {
+        _timeTableList[indexToUpdate] = update;
+      }
+
       notifyListeners();
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<void> deleteTimetable(int id) async {
+    _timeTableList.removeWhere((element) => element.id == id);
     notifyListeners();
+    await Future.delayed(const Duration(seconds: 2));
+    try {
+      await DataSource.deleteTimeTable(id);
+    } catch (e) {
+      rethrow;
+    }
   }
 }

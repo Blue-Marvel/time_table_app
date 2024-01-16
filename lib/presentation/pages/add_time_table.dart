@@ -3,9 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:time_table_app/provider/time_table_provider.dart';
 
 class AddTimeTableScreen extends ConsumerStatefulWidget {
-  final String id, subject, day, time;
+  final String subject, day, time;
+  final int id;
   const AddTimeTableScreen({
-    this.id = '',
+    this.id = -5,
     this.subject = '',
     this.day = '',
     this.time = '',
@@ -72,7 +73,7 @@ class _AddTimeTableScreenState extends ConsumerState<AddTimeTableScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Add')),
       floatingActionButton: FloatingActionButton(
-        onPressed: widget.id == '' ? insertTable : updateTable,
+        onPressed: widget.id == -5 ? insertTable : updateTable,
         child: const Icon(Icons.check),
       ),
       body: Padding(
